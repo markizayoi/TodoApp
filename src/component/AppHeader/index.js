@@ -50,7 +50,7 @@ export default function AppHeader ({}){
                     fontSize: 30,
                     color: '#1f145c',
                 }}>
-                TODO APP
+                TODO APP v2
             </Text>
             <Icon name="sort" size={30} color="black" onPress={() => openSortModal()}  />
             <Icon name="delete" size={30} color="red" onPress={clearAllTodos} />
