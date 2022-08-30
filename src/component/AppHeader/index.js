@@ -25,11 +25,15 @@ export default function AppHeader ({}){
                         );
                     }); 
                     dispatch(setTodos([]))
-                    */} 
-                    axios.delete('http://192.168.1.102:3300/todos');
-                    axios.get("http://192.168.1.102:3300/todos").then(response => {
-                        dispatch(setTodos(response.data))
-                    })
+                    */}
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            axios.delete('http://192.168.1.102:3300/todos');
+                            axios.get("http://192.168.1.102:3300/todos").then(response => {
+                                resolve(dispatch(setTodos(response.data)))
+                            })
+                        }, 10)
+                    }) 
                 } ,
             },
             {

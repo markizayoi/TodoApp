@@ -39,10 +39,14 @@ export default function TodoApp ({}) {
     */}
 
     const fetchData = () => {
-        axios.get("http://192.168.1.102:3300/todos").then(response => {
-            dispatch(setTodos(response.data))
+        return new Promise ((resolve, reject) => {
+            setTimeout(() => {
+                axios.get("http://192.168.1.102:3300/todos").then(response => {
+                    resolve(dispatch(setTodos(response.data)));
+                    console.log(response.data)
+                }).catch(error => alert('There was an error:' + error));
+            }, 50)
         })
-
         //const URL = "http://192.168.1.102:3300/todos";
         //fetch(URL).then((response) => response.json()).then((json) => dispatch(setTodos(json)))
     }

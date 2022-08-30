@@ -44,19 +44,23 @@ export default function AppInputFooter ({}){
         if (textInput == '') {
             Alert.alert('Empty!', 'Please input a todo.');
         } else {
-            const myDate = moment().format('LLLL');
-            const completed = false;
-            axios.post('http://192.168.1.102:3300/todos', {
-                "task_name": textInput,
-                "date": myDate,
-                "completed": completed,
-            }).then(response => {
-                console.log(response)
-                dispatch(setTextInput(''));
-                axios.get("http://192.168.1.102:3300/todos").then(response => {
-                    dispatch(setTodos(response.data))
-                })
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const myDate = moment().format('YYYY-MM-DD')
+                    const completed = false;
+                    axios.post('http://192.168.1.102:3300/todos', {
+                        "task_name": textInput,
+                        "date": myDate,
+                        "completed": completed,
+                    }).then(response => {
+                        dispatch(setTextInput(''));
+                        axios.get("http://192.168.1.102:3300/todos").then(response => {
+                            resolve(dispatch(setTodos(response.data)))
+                        })
+                    }).catch(error => alert('There was an error:' + error));
+                }, 10)
             })
+            
         }  
     }
 

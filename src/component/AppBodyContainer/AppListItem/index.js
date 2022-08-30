@@ -27,9 +27,13 @@ export default function ListItem ({todo}){
             dispatch(setTodos(newTodosItem))
         });  
         */}
-        axios.delete(`http://192.168.1.102:3300/todos/${todoId}`);
-        axios.get("http://192.168.1.102:3300/todos").then(response => {
-            dispatch(setTodos(response.data))
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                axios.delete(`http://192.168.1.102:3300/todos/${todoId}`);
+                axios.get("http://192.168.1.102:3300/todos").then(response => {
+                    resolve(dispatch(setTodos(response.data)));
+                }).catch(error => alert('There was an error:' + error));
+            }, 10)
         })
     };
 
@@ -40,17 +44,20 @@ export default function ListItem ({todo}){
     }
 
     const markTodoComplete = todoId => {
-        const completed = true;
-        axios.put(`http://192.168.1.102:3300/todos/${todoId}`, {
-            "task_id": todoId,
-            "task_name": todo.task_name,
-            "completed": completed,
-        }).then(response => {
-            console.log(response)
-            axios.get("http://192.168.1.102:3300/todos").then(response => {
-                dispatch(setTodos(response.data))
-            })
-        })
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const completed = true;
+                axios.put(`http://192.168.1.102:3300/todos/${todoId}`, {
+                    "task_id": todoId,
+                    "task_name": todo.task_name,
+                    "completed": completed,
+                }).then(response => {
+                    axios.get("http://192.168.1.102:3300/todos").then(response => {
+                        resolve(dispatch(setTodos(response.data)))
+                    })
+                }).catch(error => alert('There was an error:' + error));
+            }, 10)
+        })     
         {/*
         db.transaction((update) => {
             const completed = true;
@@ -90,7 +97,7 @@ export default function ListItem ({todo}){
                         marginTop: 10,
                         marginRight: 5,
                     }}>
-                    {todo?.task_id}
+                    {todo?.date}
                 </Text>
             </View>
             {!todo?.completed && (

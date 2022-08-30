@@ -33,17 +33,22 @@ export default function EditModal ({visible, toggleModal, taskId, taskName}){
                 dispatch(setTodos(newTodosItem))
             });
             */}
-            axios.put(`http://192.168.1.102:3300/todos/${taskId}`, {
-                "task_id": taskId,
-                "task_name": editInput,
-                "completed": false,
-            }).then(response => {
-                console.log(response)
-                axios.get("http://192.168.1.102:3300/todos").then(response => {
-                    dispatch(setTodos(response.data))
-                })
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    axios.put(`http://192.168.1.102:3300/todos/${taskId}`, {
+                        "task_id": taskId,
+                        "task_name": editInput,
+                        "completed": false,
+                    }).then(response => {
+                        axios.get("http://192.168.1.102:3300/todos").then(response => {
+                            resolve(dispatch(setTodos(response.data)))
+                        })
+                    }).catch(error => alert('There was an error:' + error));
+                    toggleModal();
+                }, 10)        
             })
-            toggleModal();
+            
+            
         }
     }
 
