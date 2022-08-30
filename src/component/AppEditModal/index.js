@@ -43,7 +43,7 @@ export default function EditModal ({visible, toggleModal, taskId, taskName}){
                         axios.get("http://192.168.1.102:3300/todos").then(response => {
                             resolve(dispatch(setTodos(response.data)))
                         })
-                    }).catch(error => alert('There was an error:' + error));
+                    }).catch(error => reject('There was an error: ' + error));
                     toggleModal();
                 }, 10)        
             })

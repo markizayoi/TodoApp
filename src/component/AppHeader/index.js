@@ -31,7 +31,7 @@ export default function AppHeader ({}){
                             axios.delete('http://192.168.1.102:3300/todos');
                             axios.get("http://192.168.1.102:3300/todos").then(response => {
                                 resolve(dispatch(setTodos(response.data)))
-                            })
+                            }).catch(error => reject('There was an error: ' + error));
                         }, 10)
                     }) 
                 } ,

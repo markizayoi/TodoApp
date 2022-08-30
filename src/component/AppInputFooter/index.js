@@ -57,7 +57,7 @@ export default function AppInputFooter ({}){
                         axios.get("http://192.168.1.102:3300/todos").then(response => {
                             resolve(dispatch(setTodos(response.data)))
                         })
-                    }).catch(error => alert('There was an error:' + error));
+                    }).catch(error => reject('There was an error: ' + error));
                 }, 10)
             })
             
