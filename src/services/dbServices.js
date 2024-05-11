@@ -6,5 +6,5 @@ export const db = openDatabase(
         location: 'default',
     },
     () => { },
-    error => { console.log(error) }
+    error => { console.log("Error here: ", error) }
 );

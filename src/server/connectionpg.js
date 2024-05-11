@@ -9,15 +9,3 @@ const client = new Client({
 })
 
 module.exports = client;
-
-{/*
-client.query(`Select * from todos`, (error, result) => {
-    if (!error) {
-        console.log(result.rows);
-    } else {
-        console.log(error.message);
-    }
-
-    client.end;
-})
-*/}

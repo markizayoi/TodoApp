@@ -17,17 +17,6 @@ app.get('/todos', (req, res) => {
     client.end;
 })
 
-{/*
-app.get('/todos/:task_id', (req, res) => {
-    client.query(`Select * from todos where task_id=${req.params.task_id}`, (err, result) => {
-        if (!err) {
-            res.send(result.rows);
-        }
-    });
-    client.end;
-})
-*/}
-
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 

@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch } from "react-redux";
 import { setTodos } from "../../redux/counterSlice";
 import SortModal from "../AppSortModal";
-//import { db } from "../../services/dbServices";
 import styles from "./styles";
 import axios from 'axios';
 
@@ -18,18 +17,10 @@ export default function AppHeader ({}){
             {
                 text: 'Yes',
                 onPress: () => {
-                    {/*
-                    db.transaction((del) => {
-                        del.executeSql(
-                            'DELETE FROM todotask',
-                        );
-                    }); 
-                    dispatch(setTodos([]))
-                    */}
                     return new Promise((resolve, reject) => {
                         setTimeout(() => {
-                            axios.delete('http://192.168.1.102:3300/todos');
-                            axios.get("http://192.168.1.102:3300/todos").then(response => {
+                            axios.delete('http://192.168.0.124:3300/todos');
+                            axios.get("http://192.168.0.124:3300/todos").then(response => {
                                 resolve(dispatch(setTodos(response.data)))
                             }).catch(error => reject('There was an error: ' + error));
                         }, 10)

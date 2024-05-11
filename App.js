@@ -5,9 +5,6 @@ import TodoApp from './src/screen';
 import { Store } from './src/redux/store';
 import AuthProvider from './src/navigations/AuthProvider';
 import RootStackNavigation from './src/navigations/RootStackNavigation';
-import { enableScreens } from 'react-native-screens';
-
-enableScreens();
 
 function App () {
 
