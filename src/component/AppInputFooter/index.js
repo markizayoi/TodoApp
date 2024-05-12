@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, TextInput, Alert } from "react-native";
+import { View, TouchableOpacity, TextInput, Alert, DeviceEventEmitter } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from "./styles";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,6 +25,7 @@ export default function AppInputFooter ({}){
                 }
             }).then((response) => {
                 console.log("Successfully added!");
+                DeviceEventEmitter.emit('fetch_todo');
                 dispatch(setTextInput(''));
             }).catch((error) => {
                 console.log("ERROR: ", error);

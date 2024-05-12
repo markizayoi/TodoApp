@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, DeviceEventEmitter } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EditModal from "../../AppEditModal";
 import styles from "./styles";
@@ -16,6 +16,7 @@ export default function ListItem ({todo}){
             apiEndpoint: `/items/todos/${todo_id}`,
             method: ApiMethod.DELETE,
         }).then((response) => {
+            DeviceEventEmitter.emit('fetch_todo');
             console.log("Successfully deleted!");
         }).catch((error) => {
             console.log("ERROR DELETE: ", error);
@@ -37,6 +38,7 @@ export default function ListItem ({todo}){
                 todo_status: completed
             }
         }).then((response) => {
+            DeviceEventEmitter.emit('fetch_todo');
             console.log("Successfully updated!");
         }).catch((error) => {
             console.log("ERROR UPDATE: ", error);

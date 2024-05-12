@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, DeviceEventEmitter } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import SortModal from "../AppSortModal";
 import styles from "./styles";
 import { ApiCall, ApiMethod } from "../../services/AxiosInstance";
 
 export default function AppHeader ({}){
 
-    const dispatch = useDispatch();
+    const todos = useSelector((state) => state.todoData.todos);
     const [sortModal, setSortModal] = useState({ visible: false});
 
     const deleteAllTodoFromDirectus = async () => {
@@ -16,15 +16,20 @@ export default function AppHeader ({}){
             {
                 text: 'Yes',
                 onPress: async () => {
-                    await ApiCall({
-                        apiEndpoint: `/items/todos`,
-                        method: ApiMethod.DELETE,
-                    }).then((response) => {
+                    try {
+                        for (const data of todos) {
+                            await ApiCall({
+                                apiEndpoint: `/items/todos/${data.id}`,
+                                method: ApiMethod.DELETE,
+                            });
+                            console.log("Successfully deleted:", data.id);
+                        }
                         console.log("Successfully all deleted!");
-                    }).catch((error) => {
+                        DeviceEventEmitter.emit('fetch_todo');
+                    } catch (error) {
                         console.log("ERROR DELETE ALL: ", error);
-                    })
-                } ,
+                    }
+                }
             },
             {
                 text: 'No',

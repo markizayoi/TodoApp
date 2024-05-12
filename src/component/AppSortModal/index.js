@@ -12,7 +12,7 @@ export default function SortModal ({visible, toggleModal}){
 
     const selectedTaskCategory = () => {
         const sortData = [...todos].sort((a, b) =>
-            a.task_name > b.task_name ? 1 : -1,);
+            a.todo_name > b.todo_name ? 1 : -1,);
         dispatch(setTodos(sortData))
         setCategory('todo name')
         dispatch(setSearch(''));
@@ -21,21 +21,21 @@ export default function SortModal ({visible, toggleModal}){
 
     const selectedDateCategory = () => {
         const sortData = [...todos].sort((a, b) =>
-            a.date > b.date ? 1 : -1);
+            a.date_created > b.date_created ? 1 : -1);
         dispatch(setTodos(sortData))
         dispatch(setSearch(''));
         setCategory('date created')
         toggleModal();
     }
     const selectedCompletedCategory = () => {
-        const sortData = [...todos].sort((a, b) => Number(b.completed) - Number(a.completed));
+        const sortData = [...todos].sort((a, b) => Number(b.todo_status) - Number(a.todo_status));
         dispatch(setTodos(sortData))
         dispatch(setSearch(''));
         setCategory('completed')
         toggleModal();
     }
     const selectedNotCompletedCategory = () => {
-        const sortData = [...todos].sort((a, b) => Number(a.completed) - Number(b.completed));
+        const sortData = [...todos].sort((a, b) => Number(a.todo_status) - Number(b.todo_status));
         dispatch(setTodos(sortData))
         dispatch(setSearch(''));
         setCategory('not completed')

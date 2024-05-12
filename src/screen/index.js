@@ -5,6 +5,7 @@ import AppInputFooter from '../component/AppInputFooter';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTodos, setSearch, setTextInput, } from '../redux/counterSlice';
 import { ApiCall, ApiMethod } from '../services/AxiosInstance';
+import { DeviceEventEmitter } from 'react-native';
 
 export default function TodoApp ({}) {
 
@@ -14,11 +15,14 @@ export default function TodoApp ({}) {
     useEffect(() => {
         dispatch(setSearch(''));
         dispatch(setTextInput(''));
+        fetchTodoFromDirectus();
     }, []);
 
     useEffect(() => {
-        fetchTodoFromDirectus();
-    }, [todos]);
+        DeviceEventEmitter.addListener('fetch_todo', async () => {
+            await fetchTodoFromDirectus();
+        });
+    }, []);
 
     const fetchTodoFromDirectus = async () => {
         await ApiCall({

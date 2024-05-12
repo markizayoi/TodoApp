@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
+import { Modal, View, Text, TouchableOpacity, TextInput, Alert, DeviceEventEmitter } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from "./styles";
 import { ApiCall, ApiMethod } from "../../services/AxiosInstance";
@@ -20,6 +20,7 @@ export default function EditModal ({visible, toggleModal, taskId, taskName}){
                 }
             }).then((response) => {
                 console.log("Successfully updated!");
+                DeviceEventEmitter.emit('fetch_todo');
                 toggleModal();
             }).catch((error) => {
                 console.log("ERROR UPDATE EDIT: ", error);
