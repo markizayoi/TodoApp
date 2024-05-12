@@ -1,40 +1,36 @@
 import React from "react";
 import { View, TouchableOpacity, TextInput, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import moment from 'moment';
 import styles from "./styles";
 import { useSelector, useDispatch } from "react-redux";
-import { setTodos, setTextInput } from "../../redux/counterSlice";
-import axios from 'axios';
+import { setTextInput } from "../../redux/counterSlice";
+import { ApiCall, ApiMethod } from "../../services/AxiosInstance";
 
 export default function AppInputFooter ({}){
 
     const dispatch = useDispatch();
     const textInput = useSelector((state) => state.todoData.textInput);
 
-    const addData = () => {
+    const addTodoToDirectus = async () => {
         if (textInput == '') {
             Alert.alert('Empty!', 'Please input a todo.');
         } else {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    const myDate = moment().format('YYYY-MM-DD')
-                    const completed = false;
-                    axios.post('http://192.168.0.124:3300/todos', {
-                        "task_name": textInput,
-                        "date": myDate,
-                        "completed": completed,
-                    }).then(response => {
-                        dispatch(setTextInput(''));
-                        axios.get("http://192.168.0.124:3300/todos").then(response => {
-                            resolve(dispatch(setTodos(response.data)))
-                        })
-                    }).catch(error => reject('There was an error: ' + error));
-                }, 10)
+            const completed = 'Incomplete';
+            await ApiCall({
+                apiEndpoint: '/items/todos',
+                method: ApiMethod.POST,
+                apiData: {
+                    todo_name: textInput,
+                    todo_status: completed
+                }
+            }).then((response) => {
+                console.log("Successfully added!");
+                dispatch(setTextInput(''));
+            }).catch((error) => {
+                console.log("ERROR: ", error);
             })
-            
         }  
-    }
+    };
 
     return (
         <View style={styles.footer}>
@@ -45,7 +41,7 @@ export default function AppInputFooter ({}){
                     onChangeText={text => dispatch(setTextInput(text))}
                 />
             </View>
-            <TouchableOpacity onPress={addData}>
+            <TouchableOpacity onPress={addTodoToDirectus}>
                 <View style={styles.iconContainer}>
                     <Icon name="add" color="white" size={30} />
                 </View>

@@ -15,7 +15,7 @@ export default function AppBodyContainer({}){
     const searchFilter = (text) => {
         if (text) {
             const newData = todos.filter((item) => {
-                const itemData = item.task_name ? item.task_name.toUpperCase() : ''.toUpperCase();
+                const itemData = item.todo_name ? item.todo_name.toUpperCase() : ''.toUpperCase();
                 const textData = text.toUpperCase();
                 return itemData.indexOf(textData) > -1;
             });
@@ -25,8 +25,7 @@ export default function AppBodyContainer({}){
             dispatch(setFilteredTodo(todos));
             dispatch(setSearch(text));
         }
-        
-    }
+    };
 
     return (
         <View style={styles.inputContainer}>

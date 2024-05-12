@@ -1,38 +1,31 @@
 import React, { useState } from "react";
 import { Modal, View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useDispatch } from "react-redux";
-import { setTodos } from "../../redux/counterSlice";
 import styles from "./styles";
-import axios from 'axios';
+import { ApiCall, ApiMethod } from "../../services/AxiosInstance";
 
 export default function EditModal ({visible, toggleModal, taskId, taskName}){
 
-    const dispatch = useDispatch();
     const [editInput, setEditInput] = useState('');
 
-    const editTodo = () => {
+    const editTodoInDirectus = async () => {
         if (editInput == '') {
             Alert.alert('Ops!', 'Please input an edited todo.');
         } else {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    axios.put(`http://192.168.0.124:3300/todos/${taskId}`, {
-                        "task_id": taskId,
-                        "task_name": editInput,
-                        "completed": false,
-                    }).then(response => {
-                        axios.get("http://192.168.0.124:3300/todos").then(response => {
-                            resolve(dispatch(setTodos(response.data)))
-                        })
-                    }).catch(error => reject('There was an error: ' + error));
-                    toggleModal();
-                }, 10)        
+            await ApiCall({
+                apiEndpoint: `/items/todos/${taskId}`,
+                method: ApiMethod.PATCH,
+                apiData: {
+                    todo_name: editInput
+                }
+            }).then((response) => {
+                console.log("Successfully updated!");
+                toggleModal();
+            }).catch((error) => {
+                console.log("ERROR UPDATE EDIT: ", error);
             })
-            
-            
         }
-    }
+    };
 
     return (
         <Modal transparent visible={visible} onRequestClose={toggleModal}>
@@ -48,7 +41,7 @@ export default function EditModal ({visible, toggleModal, taskId, taskName}){
                                     onChangeText={text => setEditInput(text)}
                                 />
                             </View>
-                            <TouchableOpacity onPress={editTodo}>
+                            <TouchableOpacity onPress={editTodoInDirectus}>
                                 <View style={styles.icon}>
                                     <Icon name="check" color="white" size={30} />
                                 </View>

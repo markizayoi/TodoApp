@@ -2,29 +2,28 @@ import React, { useState } from "react";
 import { View, Text, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch } from "react-redux";
-import { setTodos } from "../../redux/counterSlice";
 import SortModal from "../AppSortModal";
 import styles from "./styles";
-import axios from 'axios';
+import { ApiCall, ApiMethod } from "../../services/AxiosInstance";
 
 export default function AppHeader ({}){
 
     const dispatch = useDispatch();
     const [sortModal, setSortModal] = useState({ visible: false});
 
-    const clearAllTodos = () => {
+    const deleteAllTodoFromDirectus = async () => {
         Alert.alert('Confirmation!', 'Clear all todo?', [
             {
                 text: 'Yes',
-                onPress: () => {
-                    return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            axios.delete('http://192.168.0.124:3300/todos');
-                            axios.get("http://192.168.0.124:3300/todos").then(response => {
-                                resolve(dispatch(setTodos(response.data)))
-                            }).catch(error => reject('There was an error: ' + error));
-                        }, 10)
-                    }) 
+                onPress: async () => {
+                    await ApiCall({
+                        apiEndpoint: `/items/todos`,
+                        method: ApiMethod.DELETE,
+                    }).then((response) => {
+                        console.log("Successfully all deleted!");
+                    }).catch((error) => {
+                        console.log("ERROR DELETE ALL: ", error);
+                    })
                 } ,
             },
             {
@@ -34,26 +33,22 @@ export default function AppHeader ({}){
     };
 
     const openSortModal = () => {
-        setSortModal({visible: true})
-    }
+        setSortModal({visible: true});
+    };
     
     return (
         <View style={styles.header}>
-            <Text
-                style={{
-                    fontWeight: 'bold',
-                    fontSize: 30,
-                    color: '#1f145c',
-                }}>
-                TODO APP v2
+            <Text style={{fontWeight: 'bold', fontSize: 24, color: '#1f145c'}}>
+                TODO APP DIRECTUS
             </Text>
-            <Icon name="sort" size={30} color="black" onPress={() => openSortModal()}  />
-            <Icon name="delete" size={30} color="red" onPress={clearAllTodos} />
+            <View style={{ display: "flex", flexDirection: 'row'}}>
+                <Icon name="sort" size={30} color="black" onPress={() => openSortModal()}  />
+                <Icon name="delete" size={30} color="red" onPress={deleteAllTodoFromDirectus} />
+            </View>
             <SortModal 
                 visible = {sortModal.visible}
                 toggleModal={() => setSortModal({ visible: false })}
             />
         </View>
-        
     )
 }
