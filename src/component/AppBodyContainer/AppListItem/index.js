@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import EditModal from "../../AppEditModal";
 import styles from "./styles";
 import { ApiCall, ApiMethod } from "../../../services/AxiosInstance";
+import moment from "moment";
 
 export default function ListItem ({todo}){
 
@@ -66,7 +67,7 @@ export default function ListItem ({todo}){
                         marginTop: 10,
                         marginRight: 5,
                     }}>
-                    {todo?.date_created}
+                    {moment(todo?.date_created).format('YYYY-MM-DD')}
                 </Text>
             </View>
             {todo?.todo_status === 'Incomplete' && (
