@@ -48,7 +48,7 @@ export function ApiCall({
         url: customEndpoint ? apiEndpoint : apiUrl + apiEndpoint,
         headers: {
             'Content-Type': apiContentType,
-            'Authorization': '80Hp7_MB6V14khly86hD-i6ZxGdKf6Tj'
+            'Authorization': 'P6bFJ2PiDbBEz9XGvf_FINkQZTjjlKlX'
         },
         data: method === ApiMethod.POST || method === ApiMethod.PATCH ? apiData : undefined,
     };

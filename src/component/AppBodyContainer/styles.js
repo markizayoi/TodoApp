@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     inputContainer: {
         width: "100%",
+        height: '100%',
         backgroundColor: '#FFFFFF',
     },
     input: {

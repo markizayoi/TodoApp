@@ -5,7 +5,7 @@ const ENV = {
     },
     devlocal: {
         env: 'local',
-        apiUrl: "http://192.168.0.124:8055"
+        apiUrl: "http://192.168.0.110:8055"
     },
     prod: {
         env: 'production',
